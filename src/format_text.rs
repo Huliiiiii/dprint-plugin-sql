@@ -12,14 +12,15 @@ pub fn format_text(_file_path: &Path, text: &str, config: &Configuration) -> Res
   let text = sqlformat::format(
     text,
     &QueryParams::None,
-    FormatOptions {
+    &FormatOptions {
       indent: if config.use_tabs {
         Indent::Tabs
       } else {
         Indent::Spaces(config.indent_width)
       },
-      uppercase: config.uppercase,
+      uppercase: Some(config.uppercase),
       lines_between_queries: config.lines_between_queries,
+      ignore_case_convert: None,
     },
   );
 
@@ -40,9 +41,5 @@ pub fn format_text(_file_path: &Path, text: &str, config: &Configuration) -> Res
     text.replace("\r\n", "\n").replace("\n", "\r\n")
   };
 
-  if text == input_text {
-    Ok(None)
-  } else {
-    Ok(Some(text))
-  }
+  if text == input_text { Ok(None) } else { Ok(Some(text)) }
 }

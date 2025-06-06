@@ -1,16 +1,25 @@
 [package]
 name = "dprint-plugin-sql"
 version = "0.2.0"
-authors = ["David Sherret <dsherret@gmail.com>"]
-edition = "2021"
+authors = [
+	"David Sherret <dsherret@gmail.com>",
+]
+edition = "2024"
 homepage = "https://github.com/dprint/dprint-plugin-sql"
-keywords = ["formatting", "formatter", "sql"]
+keywords = [
+	"formatting",
+	"formatter",
+	"sql",
+]
 license = "MIT"
 repository = "https://github.com/dprint/dprint-plugin-sql"
 description = "SQL formatter for dprint via sqlformat-rs."
 
 [lib]
-crate-type = ["lib", "cdylib"]
+crate-type = [
+	"lib",
+	"cdylib",
+]
 
 [profile.release]
 opt-level = 3
@@ -21,14 +30,24 @@ overflow-checks = false
 panic = "abort"
 
 [features]
-wasm = ["serde_json", "dprint-core/wasm"]
+default = [
+	"wasm",
+]
+wasm = [
+	"serde_json",
+	"dprint-core/wasm",
+]
 
 [dependencies]
 anyhow = "1.0.51"
-dprint-core = { version = "0.62.1", features = ["formatting"] }
-serde = { version = "1.0.88", features = ["derive"] }
+dprint-core = { version = "0.62.1", features = [
+	"formatting",
+] }
+serde = { version = "1.0.88", features = [
+	"derive",
+] }
 serde_json = { version = "1.0", optional = true }
-sqlformat = "0.2.1"
+sqlformat = "0.3.5"
 
 [dev-dependencies]
 dprint-development = "0.9.3"
