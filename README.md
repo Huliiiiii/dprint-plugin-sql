@@ -6,43 +6,51 @@ Wrapper around [sqlformat-rs](https://github.com/shssoichiro/sqlformat-rs) for u
 
 ## Configuration
 
-### `Uppercase: bool`
+### `uppercase: bool`
 
 When set, changes reserved keywords to ALL CAPS
+
 **Default:** `false`
 
-### `LinesBetweenQueries: number`
+### `linesBetweenQueries: number`
 
 Controls the number of line breaks after a query
+
 **Default:** `1`
 
-### `IgnoreCaseConvert: string[]`
+### `ignoreCaseConvert: string[]`
 
 Ignore case conversion for specified strings in the array
+
 **Default:** `[]`
 
-### `Inline: bool`
+### `inline: bool`
 
 Keep the query in a single line
+
 **Default:** `false`
 
-### `MaxInlineBlock: number`
+### `maxInlineBlock: number`
 
 Maximum length of an inline block
+
 **Default:** `50`
 
-### `MaxInlineArguments: number`
+### `maxInlineArguments: number`
 
 Maximum length of inline arguments
 If unset, keep every argument in a separate line
+
 **Default:** `Unlimited`
 
-### `MaxInlineTopLevel: number`
+### `maxInlineTopLevel: number`
 
 Inline the argument at the top level if they would fit a line of this length
+
 **Default:** `Unlimited`
 
-### `JoinsAsTopLevel: bool`
+### `joinsAsTopLevel: bool`
 
 Consider any JOIN statement as a top level keyword instead of a reserved keyword
+
 **Default:** `false`
