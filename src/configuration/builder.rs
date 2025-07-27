@@ -20,6 +20,12 @@ pub struct ConfigurationBuilder {
   global_config: Option<GlobalConfiguration>,
 }
 
+impl Default for ConfigurationBuilder {
+  fn default() -> Self {
+    Self::new()
+  }
+}
+
 impl ConfigurationBuilder {
   /// Constructs a new configuration builder.
   pub fn new() -> ConfigurationBuilder {
