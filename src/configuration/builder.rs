@@ -1,5 +1,5 @@
 use dprint_core::configuration::{
-  resolve_global_config, ConfigKeyMap, ConfigKeyValue, GlobalConfiguration, NewLineKind,
+  ConfigKeyMap, ConfigKeyValue, GlobalConfiguration, NewLineKind, resolve_global_config,
 };
 
 use super::*;
@@ -77,6 +77,46 @@ impl ConfigurationBuilder {
     self.insert("linesBetweenQueries", (value as i32).into())
   }
 
+  /// Whether to format SQL inline (single line) vs multi-line.
+  /// Default: `false`
+  pub fn inline(&mut self, value: bool) -> &mut Self {
+    self.insert("inline", value.into())
+  }
+
+  /// Maximum length for inline blocks before breaking to multiple lines.
+  /// Default: `50`
+  pub fn max_inline_block(&mut self, value: usize) -> &mut Self {
+    self.insert("maxInlineBlock", (value as i32).into())
+  }
+
+  /// Maximum number of arguments to keep inline.
+  /// Default: `None` (no limit)
+  pub fn max_inline_arguments(&mut self, value: Option<usize>) -> &mut Self {
+    if let Some(v) = value {
+      self.insert("maxInlineArguments", (v as i32).into())
+    } else {
+      self.config.remove("maxInlineArguments");
+      self
+    }
+  }
+
+  /// Maximum length for top-level statements to keep inline.
+  /// Default: `None` (no limit)
+  pub fn max_inline_top_level(&mut self, value: Option<usize>) -> &mut Self {
+    if let Some(v) = value {
+      self.insert("maxInlineTopLevel", (v as i32).into())
+    } else {
+      self.config.remove("maxInlineTopLevel");
+      self
+    }
+  }
+
+  /// Whether to treat JOINs as top-level statements.
+  /// Default: `false`
+  pub fn joins_as_top_level(&mut self, value: bool) -> &mut Self {
+    self.insert("joinsAsTopLevel", value.into())
+  }
+
   #[cfg(test)]
   pub(super) fn get_inner_config(&self) -> ConfigKeyMap {
     self.config.clone()
@@ -90,7 +130,7 @@ impl ConfigurationBuilder {
 
 #[cfg(test)]
 mod tests {
-  use dprint_core::configuration::{resolve_global_config, NewLineKind};
+  use dprint_core::configuration::{NewLineKind, resolve_global_config};
 
   use super::*;
 
@@ -102,10 +142,15 @@ mod tests {
       .use_tabs(true)
       .indent_width(4)
       .uppercase(true)
-      .lines_between_queries(2);
+      .lines_between_queries(2)
+      .inline(true)
+      .max_inline_block(100)
+      .max_inline_arguments(Some(5))
+      .max_inline_top_level(Some(200))
+      .joins_as_top_level(true);
 
     let inner_config = config.get_inner_config();
-    assert_eq!(inner_config.len(), 5);
+    assert_eq!(inner_config.len(), 10);
     let diagnostics = resolve_config(
       inner_config,
       &resolve_global_config(Default::default(), &Default::default()).config,

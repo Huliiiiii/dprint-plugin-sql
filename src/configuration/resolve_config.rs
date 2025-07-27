@@ -57,6 +57,47 @@ pub fn resolve_config(
     ),
     uppercase: get_value(&mut config, "uppercase", false, &mut diagnostics),
     lines_between_queries: get_value(&mut config, "linesBetweenQueries", 1, &mut diagnostics),
+    inline: get_value(&mut config, "inline", false, &mut diagnostics),
+    max_inline_block: get_value(&mut config, "maxInlineBlock", 50, &mut diagnostics),
+    max_inline_arguments: {
+      config.remove("maxInlineArguments").and_then(|value| match value {
+        ConfigKeyValue::Number(n) if n >= 0 => Some(n as usize),
+        ConfigKeyValue::Number(_) => {
+          diagnostics.push(ConfigurationDiagnostic {
+            property_name: "maxInlineArguments".to_string(),
+            message: "Value must be a non-negative number.".to_string(),
+          });
+          None
+        }
+        _ => {
+          diagnostics.push(ConfigurationDiagnostic {
+            property_name: "maxInlineArguments".to_string(),
+            message: "Value must be a number.".to_string(),
+          });
+          None
+        }
+      })
+    },
+    max_inline_top_level: {
+      config.remove("maxInlineTopLevel").and_then(|value| match value {
+        ConfigKeyValue::Number(n) if n >= 0 => Some(n as usize),
+        ConfigKeyValue::Number(_) => {
+          diagnostics.push(ConfigurationDiagnostic {
+            property_name: "maxInlineTopLevel".to_string(),
+            message: "Value must be a non-negative number.".to_string(),
+          });
+          None
+        }
+        _ => {
+          diagnostics.push(ConfigurationDiagnostic {
+            property_name: "maxInlineTopLevel".to_string(),
+            message: "Value must be a number.".to_string(),
+          });
+          None
+        }
+      })
+    },
+    joins_as_top_level: get_value(&mut config, "joinsAsTopLevel", false, &mut diagnostics),
   };
 
   diagnostics.extend(get_unknown_property_diagnostics(config));

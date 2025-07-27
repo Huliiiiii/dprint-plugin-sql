@@ -21,6 +21,11 @@ pub fn format_text(_file_path: &Path, text: &str, config: &Configuration) -> Res
       uppercase: Some(config.uppercase),
       lines_between_queries: config.lines_between_queries,
       ignore_case_convert: None,
+      inline: config.inline,
+      max_inline_block: config.max_inline_block,
+      max_inline_arguments: config.max_inline_arguments,
+      max_inline_top_level: config.max_inline_top_level,
+      joins_as_top_level: config.joins_as_top_level,
     },
   );
 

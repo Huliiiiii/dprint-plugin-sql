@@ -9,4 +9,9 @@ pub struct Configuration {
   pub new_line_kind: NewLineKind,
   pub uppercase: bool,
   pub lines_between_queries: u8,
+  pub inline: bool,
+  pub max_inline_block: usize,
+  pub max_inline_arguments: Option<usize>,
+  pub max_inline_top_level: Option<usize>,
+  pub joins_as_top_level: bool,
 }
